@@ -122,3 +122,74 @@
 :global(.maplibregl-popup-anchor-bottom .maplibregl-popup-tip) {
   border-top-color: white;
 }
+
+/* LoRa Pulse Animation */
+.loraNode {
+  width: 14px;
+  height: 14px;
+  background-color: #00e5ff;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
+  cursor: pointer;
+}
+
+.loraNode::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border: 2px solid #00e5ff;
+  border-radius: 50%;
+  animation: pulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+.loraNodeOffline {
+  width: 14px;
+  height: 14px;
+  background-color: #ff3d00;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 0 5px #ff3d00;
+  cursor: pointer;
+}
+
+@keyframes pulse {
+  to {
+    box-shadow: 0 0 0 20px rgba(0, 229, 255, 0);
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+.fiberNode {
+  width: 18px;
+  height: 18px;
+  background-color: #ffeb3b;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 0 15px #ffeb3b, 0 0 30px #ffeb3b;
+  cursor: pointer;
+}
+
+.fiberNode::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border: 2px solid #ffeb3b;
+  border-radius: 50%;
+  animation: pulse-fiber 2s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes pulse-fiber {
+  to {
+    box-shadow: 0 0 0 25px rgba(255, 235, 59, 0);
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
