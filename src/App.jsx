@@ -3,9 +3,8 @@ import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import BuildingReportForm from './components/BuildingReportForm';
 import RoadReportForm from './components/RoadReportForm';
-import MedicalReportForm from './components/MedicalReportForm';
-import SupplyRequestForm from './components/SupplyRequestForm';
 import InteractiveMap from './components/InteractiveMap';
+import AfadDashboard from './components/AfadDashboard';
 import './App.css';
 
 function App() {
@@ -30,18 +29,29 @@ function App() {
 
   const handleSubmit = (data) => {
     console.log('Sending data via LoRa Mesh:', data);
-    // Here we would typically interface with the LoRa module or local DB
+    // Verileri AFAD ekranında görebilmek için LocalStorage'a (canlı hafıza) ekliyoruz
+    try {
+      const existing = JSON.parse(localStorage.getItem('form_reports') || '[]');
+      existing.push({ ...data, timestamp: new Date().toISOString() });
+      localStorage.setItem('form_reports', JSON.stringify(existing));
+      
+      // Çoklu ekranlarda anında tetiklenmesi için özel bir storage event'i fırlatabiliriz
+      window.dispatchEvent(new Event('storage'));
+    } catch (e) {
+      console.error("Local storage error", e);
+    }
   };
 
   return (
     <>
-      <Header connectionStatus={connectionStatus} />
+      {currentView !== 'afad' && <Header connectionStatus={connectionStatus} />}
       
-      <main>
+      <main style={{ height: currentView === 'afad' ? '100vh' : undefined }}>
         {currentView === 'dashboard' && <Dashboard onNavigate={handleNavigate} />}
-        {(currentView === 'building' || currentView === 'road') && <InteractiveMap onBack={handleBackToDashboard} />}
-        {currentView === 'medical' && <MedicalReportForm onBack={handleBackToDashboard} onSubmit={handleSubmit} />}
-        {currentView === 'supply' && <SupplyRequestForm onBack={handleBackToDashboard} onSubmit={handleSubmit} />}
+        {(currentView === 'building' || currentView === 'road' || currentView === 'medical' || currentView === 'supply' || currentView === 'supply_view' || currentView === 'mesh_view') && 
+          <InteractiveMap onBack={handleBackToDashboard} mode={currentView} />
+        }
+        {currentView === 'afad' && <AfadDashboard onBack={handleBackToDashboard} onShowMap={() => handleNavigate('road')} onShowMesh={() => handleNavigate('mesh_view')} />}
       </main>
     </>
   );

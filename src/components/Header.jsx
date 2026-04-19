@@ -10,7 +10,7 @@ const Header = ({ connectionStatus = 'connected', volunteerName = 'Gönüllü - 
           <Activity size={24} />
         </div>
         <div>
-          <h1 className={styles.title}>AFAD Koordinasyon</h1>
+          <h1 className={styles.title}>City Link</h1>
           <div className={styles.subtitle}>İlk 48 Saat Acil Bildirim Sistemi</div>
         </div>
       </div>
